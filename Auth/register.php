@@ -11,22 +11,18 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Crie sua conta para registrar uma agência</h2>
-        <form action="#" method="POST">
+        <form action="register.php" method="POST">
             <div class="mb-4">
-                <label for="nome" class="block text-sm font-medium text-gray-700">Nome</label>
-                <input type="text" id="nome" name="nome" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                <input type="text" id="name" name="name" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
             </div>
             <div class="mb-4">
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" id="email" name="email" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
             </div>
             <div class="mb-4">
-                <label for="senha" class="block text-sm font-medium text-gray-700">Senha</label>
-                <input type="password" id="senha" name="senha" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
-            </div>
-            <div class="mb-4">
-                <label for="confirmar_senha" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
-                <input type="password" id="confirmar_senha" name="confirmar_senha" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                <input type="password" id="password" name="password" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
             </div>
             <div class="flex items-center justify-between mb-4">
             </div>
@@ -43,3 +39,23 @@
 </body>
 
 </html>
+<?php
+include '../conect.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1, $name);
+    $stmt->bindParam(2, $email);
+    $stmt->bindParam(3, $password);
+    if ($stmt->execute()) {
+        echo "Cadastrado";
+    } else {
+        echo "Erro";
+    }
+    $stmt = null;
+    $pdo = null;
+}
+?>
