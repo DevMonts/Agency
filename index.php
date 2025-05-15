@@ -35,6 +35,7 @@ include 'conect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $sql = "INSERT INTO agency (name) VALUES (?)";
+    $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $name);
     if ($stmt->execute()) {
         echo "Cadastrado";
