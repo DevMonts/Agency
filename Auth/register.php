@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(2, $email);
     $stmt->bindParam(3, $password);
     if ($stmt->execute()) {
-        echo "Cadastrado";
+        header("Location: ../index.php");
     } else {
         echo "Erro";
     }
