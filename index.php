@@ -1,48 +1,79 @@
+<?php
+require_once "conect.php";
+function createContact($pdo, $name, $email, $phone)
+{
+    $stmt = $pdo->prepare("INSERT INTO contacts (name, email, phone) VALUES (?, ?, ?)");
+    $stmt->execute([$name, $email, $phone]);
+}
+function updateContact($pdo, $id, $name, $email, $phone)
+{
+    $stmt = $pdo->prepare("UPDATE contacts SET name=?, email=?, phone=? WHERE id=?");
+    $stmt->execute([$name, $email, $phone, $id]);
+}
+function deleteContact($pdo, $id)
+{
+    $stmt = $pdo->prepare("DELETE FROM contacts WHERE id=?");
+    $stmt->execute([$id]);
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["action"])) {
+        if ($_POST["action"] === "create") {
+            createContact($pdo, $_POST["name"], $_POST["email"], $_POST["phone"]);
+        } elseif ($_POST["action"] === "update") {
+            updateContact($pdo, $_POST["id"], $_POST["name"], $_POST["email"], $_POST["phone"]);
+        }
+    }
+} elseif (isset($_GET["delete"])) {
+    deleteContact($pdo, $_GET["delete"]);
+}
+$stmt = $pdo->query("SELECT * FROM contacts ORDER BY id DESC");
+$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agências</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Contacts CRUD</title>
 </head>
 
-<body class="bg-gray-100 p-6">
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 class="text-2xl font-bold mb-4">Nome da Agência</h1>
-        <form id="formAgencia" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-                <input type="text" name="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
-            </div>
-            <div class="md:col-span-2">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cadastrar</button>
-            </div>
-        </form>
-        <div>
-            <table class="min-w-full bg-white border">
-                <tbody id="Agencies" class="text-sm">
-                    <?php include('Lists/agencies.php'); ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<body>
+    <h1>Contact List</h1>
+    <table border="1" cellpadding="6">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($contacts as $row): ?>
+            <tr>
+                <td><?= $row["id"] ?></td>
+                <td><?= htmlspecialchars($row["name"]) ?></td>
+                <td><?= htmlspecialchars($row["email"]) ?></td>
+                <td><?= htmlspecialchars($row["phone"]) ?></td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                        <input type="text" name="name" value="<?= htmlspecialchars($row["name"]) ?>" required>
+                        <input type="email" name="email" value="<?= htmlspecialchars($row["email"]) ?>" required>
+                        <input type="text" name="phone" value="<?= htmlspecialchars($row["phone"]) ?>" required>
+                        <button type="submit">Update</button>
+                    </form>
+                    <a href="?delete=<?= $row["id"] ?>" onclick="return confirm('Delete this contact?')">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <h2>Add New Contact</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="create">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone" required>
+        <button type="submit">Add</button>
+    </form>
 </body>
 
 </html>
-<?php
-include 'conect.php';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $sql = "INSERT INTO agency (name) VALUES (?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(1, $name);
-    if ($stmt->execute()) {
-        echo "Cadastrado";
-    } else {
-        echo "Erro";
-    }
-    $stmt = null;
-    $pdo = null;
-}
-?>

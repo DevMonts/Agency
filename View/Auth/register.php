@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $name);
     $stmt->bindParam(2, $email);
