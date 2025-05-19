@@ -30,50 +30,60 @@ $stmt = $pdo->query("SELECT * FROM contacts ORDER BY id DESC");
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Contacts CRUD</title>
+    <meta charset="UTF-8">
+    <title>Agência</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <h1>Contact List</h1>
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-        </tr>
-        <?php foreach ($contacts as $row): ?>
-            <tr>
-                <td><?= $row["id"] ?></td>
-                <td><?= htmlspecialchars($row["name"]) ?></td>
-                <td><?= htmlspecialchars($row["email"]) ?></td>
-                <td><?= htmlspecialchars($row["phone"]) ?></td>
-                <td>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                        <input type="text" name="name" value="<?= htmlspecialchars($row["name"]) ?>" required>
-                        <input type="email" name="email" value="<?= htmlspecialchars($row["email"]) ?>" required>
-                        <input type="text" name="phone" value="<?= htmlspecialchars($row["phone"]) ?>" required>
-                        <button type="submit">Update</button>
-                    </form>
-                    <a href="?delete=<?= $row["id"] ?>" onclick="return confirm('Delete this contact?')">Delete</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-    <h2>Add New Contact</h2>
-    <form method="POST">
-        <input type="hidden" name="action" value="create">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="phone" placeholder="Phone" required>
-        <button type="submit">Add</button>
-    </form>
+<body class="bg-gray-100 text-gray-800 font-sans p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Contatos da Agência</h1>
+        <table class="table-auto w-full bg-white shadow-md rounded mb-6">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 text-left">ID</th>
+                    <th class="px-4 py-2 text-left">Nome</th>
+                    <th class="px-4 py-2 text-left">Email</th>
+                    <th class="px-4 py-2 text-left">Contato</th>
+                    <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($contacts as $row): ?>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-4 py-2"><?= $row["id"] ?></td>
+                        <td class="px-4 py-2"><?= htmlspecialchars($row["name"]) ?></td>
+                        <td class="px-4 py-2"><?= htmlspecialchars($row["email"]) ?></td>
+                        <td class="px-4 py-2"><?= htmlspecialchars($row["phone"]) ?></td>
+                        <td class="px-4 py-2 space-x-2">
+                            <form method="POST" class="inline-flex space-x-1">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                <input type="text" name="name" value="<?= htmlspecialchars($row["name"]) ?>" required class="border rounded px-2 py-1">
+                                <input type="email" name="email" value="<?= htmlspecialchars($row["email"]) ?>" required class="border rounded px-2 py-1">
+                                <input type="text" name="phone" value="<?= htmlspecialchars($row["phone"]) ?>" required class="border rounded px-2 py-1">
+                                <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Atualizar</button>
+                            </form>
+                            <a href="?delete=<?= $row["id"] ?>" onclick="return confirm('Certeza?')"
+                                class="text-red-500 hover:underline">Excluir</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <form method="POST" class="bg-white shadow-md rounded p-4 space-y-4">
+            <input type="hidden" name="action" value="create">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="text" name="name" placeholder="Nome" required class="flex-1 border rounded px-3 py-2">
+                <input type="email" name="email" placeholder="Email" required class="flex-1 border rounded px-3 py-2">
+                <input type="text" name="phone" placeholder="Contato" required class="flex-1 border rounded px-3 py-2">
+            </div>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Adicionar</button>
+        </form>
+    </div>
 </body>
 
 </html>
