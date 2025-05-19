@@ -40,6 +40,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body class="bg-gray-100 text-gray-800 font-sans p-6">
     <div class="max-w-4xl mx-auto">
+        <a href="View/Auth/login.php" class="inline-block mb-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Logoff</a>
         <h1 class="text-3xl font-bold mb-6">Contatos da Agência</h1>
         <table class="table-auto w-full bg-white shadow-md rounded mb-6">
             <thead>
