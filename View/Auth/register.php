@@ -13,7 +13,11 @@
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Crie sua conta para registrar uma agência</h2>
         <form action="register.php" method="POST">
             <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                <label for="agency_name" class="block text-sm font-medium text-gray-700">Nome da Agência</label>
+                <input type="text" id="agency_name" name="agency_name" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nome do Administrador</label>
                 <input type="text" id="name" name="name" class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
             </div>
             <div class="mb-4">
